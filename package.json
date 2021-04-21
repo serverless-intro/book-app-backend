@@ -1,0 +1,46 @@
+{
+  "name": "book-app-backend",
+  "version": "0.0.1",
+  "description": "Book App Backend",
+  "scripts": {
+    "start": "npm run build && npm run serve",
+    "build": "npm run build-ts && npm run lint",
+    "build-ts": "tsc",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --fix",
+    "test": "jest --forceExit --coverage --verbose",
+    "test:ci": "jest --forceExit",
+    "serve": "node dist/local-app.js",
+    "serve-debug": "nodemon --inspect dist/local-app.js",
+    "watch": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "watch-node": "nodemon dist/local-app.js",
+    "watch-test": "npm run test -- --watchAll",
+    "watch-ts": "tsc -w"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nanoid": "^3.1.22"
+  },
+  "devDependencies": {
+    "@types/concurrently": "^5.2.1",
+    "@types/eslint": "^7.2.6",
+    "@types/express": "^4.17.11",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.25",
+    "@types/shelljs": "^0.8.8",
+    "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "concurrently": "^5.3.0",
+    "eslint": "^7.19.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.4",
+    "shelljs": "^0.8.4",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  },
+  "author": "Marek Matczak",
+  "license": "Apache-2.0"
+}
