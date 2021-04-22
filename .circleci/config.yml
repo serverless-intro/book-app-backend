@@ -5,6 +5,10 @@ jobs:
       - image: circleci/node:lts-browsers
     steps:
       - checkout
+      - run: |
+            node --version
+            java --version
+            google-chrome --version
       - restore_cache:
           key: NodeModules-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
