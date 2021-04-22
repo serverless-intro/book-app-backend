@@ -1,4 +1,4 @@
-import {BookState, UpdateBookStateCommand, NewBookCommand} from '../../../domain/book';
+import { BookState, UpdateBookStateCommand, NewBookCommand } from '../../../domain/book';
 
 export type getAllBooks = () => Promise<BookState[]>;
 export type getBook = (id: string) => Promise<BookState>;

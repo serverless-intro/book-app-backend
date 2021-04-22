@@ -1,4 +1,4 @@
-import {BookId, BookState} from '../../../domain/book';
+import { BookId, BookState } from '../../../domain/book';
 
 export type loadBook = (id: BookId) => Promise<BookState>;
 export type persistUpdatedBook = (bookToUpdate: BookState) => Promise<void>;

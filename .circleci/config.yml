@@ -58,8 +58,13 @@ jobs:
       - coveralls/upload
 
 workflows:
-  build_and_test:
+  version: 2
+  lint_test_build:
     jobs:
-      - build
       - lint
-      - test
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
