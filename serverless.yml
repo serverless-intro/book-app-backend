@@ -1,0 +1,22 @@
+service: book-app-backend
+
+package:
+  patterns:
+    - '!./**'
+    - 'dist/**'
+    - 'node_modules/**'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: eu-central-1
+
+functions:
+  app: # the default 'catch all' route only
+    handler: dist/serverless-app.handler # after 'npm run build' index.ts is transpiled to dist/index.js
+    events:
+      - httpApi:
+          method: '*'
+          path: '*'

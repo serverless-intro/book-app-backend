@@ -57,6 +57,21 @@ jobs:
          path: ./coverage
       - coveralls/upload
 
+  deploy:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout_and_install
+      - run:
+          name: Building
+          command: npm run build
+      - run:
+          name: Installing serverless CLI
+          command: sudo npm i -g serverless
+      - run:
+          name: Deploying to AWS using Serverless CLI
+          command: serverless deploy
+
 workflows:
   version: 2
   lint_test_build:
@@ -68,3 +83,6 @@ workflows:
       - build:
           requires:
             - test
+      -deploy:
+          requires:
+            - build
