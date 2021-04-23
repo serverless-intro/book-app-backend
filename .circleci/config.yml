@@ -66,15 +66,12 @@ jobs:
           name: Building
           command: npm run build
       - run:
-          name: Installing serverless CLI
-          command: sudo npm i -g serverless
-      - run:
           name: Deploying to AWS using Serverless CLI
-          command: serverless deploy
+          command: npx serverless deploy
 
 workflows:
   version: 2
-  lint_test_build:
+  lint_test_build_deploy:
     jobs:
       - lint
       - test:
