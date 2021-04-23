@@ -1,10 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 import { NextFunction, Request, Response, Express } from 'express-serve-static-core';
 import { ValidationError } from './domain/common';
 import { ObjectNotFoundError } from './application/common';
 
 export function createAppWithFramesAround(addAppElementsFn: (app: Express) => void): Express {
   const app = express();
+  app.use(cors());
   // Enable JSON use
   app.use(express.json());
   addAppElementsFn(app);
