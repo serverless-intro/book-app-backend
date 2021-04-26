@@ -22,7 +22,7 @@ export function addSaveBookRoute(router: Router, addNewBook: addNewBook): void {
   router.post('/books', (req, res, next) => {
     const newBookCommand = req.body as NewBookCommand;
     addNewBook(newBookCommand)
-      .then(() => res.sendStatus(201))
+      .then(() => res.sendStatus(204))
       .catch(next);
   });
 }
@@ -32,7 +32,7 @@ export function addUpdateBookRoute(router: Router, updateBook: updateBook): void
     const id = req.params.id;
     const updateBookStateCommand = { id, ...req.body } as UpdateBookStateCommand;
     updateBook(updateBookStateCommand)
-      .then(() => res.sendStatus(200))
+      .then(() => res.sendStatus(204))
       .catch(next);
   });
 }
