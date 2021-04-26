@@ -66,8 +66,8 @@ jobs:
     steps:
       - attach_workspace:
          at: /tmp/workspace
-      - coveralls/upload
-        path_to_lcov: /tmp/workspace/coverage/lcov.info
+      - coveralls/upload:
+         path_to_lcov: /tmp/workspace/coverage/lcov.info
 
 workflows:
   version: 2
