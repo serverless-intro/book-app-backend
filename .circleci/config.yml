@@ -55,6 +55,17 @@ jobs:
          path: ./reports/jest
       - store_artifacts:
          path: ./coverage
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./coverage
+
+  upload_coverage_to_coveralls:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - attach_workspace:
+         at: .
       - coveralls/upload
 
   deploy:
@@ -77,6 +88,9 @@ workflows:
       - test:
           requires:
             - lint
+      - upload_coverage_to_coveralls:
+          requires:
+            - test
       - build:
           requires:
             - test
