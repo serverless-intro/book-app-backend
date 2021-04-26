@@ -2,11 +2,11 @@ import { loadAllBooks, loadBook, persistNewBook, persistUpdatedBook } from '../.
 import { BookId, BookState } from '../../../domain/book';
 import { ObjectNotFoundError } from '../../../application/common';
 
-let books = [
-  { id: '5VVGTSPMKHH3A8', author: 'Douglas Crockford', title: 'JavaScript: The Good Parts' },
-  { id: '5VVGTSPMKHH3A9', author: 'Joshua Bloch', title: 'Effective Java' },
-  { id: '5VVGTSPMKHH3A0', author: 'Robert C. Martin', title: 'Clean Code' },
-  { id: '5VVGTSPMKHH3A1', author: 'Eric Evans', title: 'Domain-Driven Design' },
+let books: BookState[] = [
+  { id: '5VVGTSPMKHH3A8', author: 'Douglas Crockford', title: 'JavaScript: The Good Parts', isbn: '9780596517748' },
+  { id: '5VVGTSPMKHH3A9', author: 'Joshua Bloch', title: 'Effective Java', isbn: '9780134685991' },
+  { id: '5VVGTSPMKHH3A0', author: 'Robert C. Martin', title: 'Clean Code', isbn: '9780132350884' },
+  { id: '5VVGTSPMKHH3A1', author: 'Eric Evans', title: 'Domain-Driven Design', isbn: '9780321125217' },
 ];
 
 export function loadBookFactory(): loadBook {

@@ -3,16 +3,17 @@ import { ValidationError } from '../../src/domain/common';
 
 describe('Domain', () => {
   describe('Book', () => {
-    let author: string, title: string;
+    let author: string, title: string, isbn: string;
 
     beforeEach(() => {
       author = 'Test author';
       title = 'Test title';
+      isbn = '0123456789';
     });
 
     it('is created when all its properties are correct', () => {
       // given
-      const book = Book.createNew({ author, title });
+      const book = Book.createNew({ author, title, isbn });
       // when
       const currentState = book.currentState();
       // then
@@ -54,6 +55,16 @@ describe('Domain', () => {
       expectErrorWithName(ValidationError.NAME).toBeThrownWhen(() => {
         // when
         Book.createNew({ author: tooLongAuthor });
+      });
+    });
+
+    it('fails to be created when ISBN wrong', () => {
+      // given
+      const wrongIsbn = '012345678'; // too short
+      // then
+      expectErrorWithName(ValidationError.NAME).toBeThrownWhen(() => {
+        // when
+        Book.createNew({ author, title, isbn: wrongIsbn });
       });
     });
 
