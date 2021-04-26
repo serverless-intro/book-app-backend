@@ -95,7 +95,7 @@ describe('Web Adapter', () => {
         .post('/api/books')
         .send(newBook)
         // then
-        .expect(201)
+        .expect(204)
         .then(() => {
           expect(addNewBookMock).toHaveBeenCalledWith(newBook);
           done();
@@ -133,7 +133,7 @@ describe('Web Adapter', () => {
         .put(`/api/books/${testBook.id}`)
         .send(testBook)
         // then
-        .expect(200)
+        .expect(204)
         .then(() => {
           expect(updateBookMock).toHaveBeenCalledWith(testBook);
           done();
