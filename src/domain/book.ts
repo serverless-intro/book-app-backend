@@ -9,6 +9,7 @@ export interface BookState {
   id: string;
   author: string;
   title: string;
+  isbn?: string;
 }
 
 export class Book {
@@ -16,22 +17,37 @@ export class Book {
     private readonly id: BookId,
     private readonly title: BookTitle,
     private readonly author: BookAuthor,
+    private readonly isbn?: ISBN,
   ) {}
 
   static from(state: UpdateBookStateCommand | BookState): Book {
-    return new Book(BookId.of(state.id), BookTitle.of(state.title), BookAuthor.of(state.author));
+    return new Book(
+      BookId.of(state.id),
+      BookTitle.of(state.title),
+      BookAuthor.of(state.author),
+      state.isbn ? ISBN.of(state.isbn) : undefined,
+    );
   }
 
   static createNew(newBookCommand: NewBookCommand): Book {
-    return new Book(BookId.generateNew(), BookTitle.of(newBookCommand.title), BookAuthor.of(newBookCommand.author));
+    return new Book(
+      BookId.generateNew(),
+      BookTitle.of(newBookCommand.title),
+      BookAuthor.of(newBookCommand.author),
+      newBookCommand.isbn ? ISBN.of(newBookCommand.isbn) : undefined,
+    );
   }
 
   currentState(): BookState {
-    return {
+    const state: BookState = {
       id: this.id.value,
       author: this.author.value,
       title: this.title.value,
     };
+    if (this.isbn) {
+      state.isbn = this.isbn.value;
+    }
+    return state;
   }
 }
 
@@ -75,5 +91,17 @@ export class BookTitle {
     assert('bookTitle').of(value).isNotEmpty().isNotLongerThan(BookTitle.maxLength);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return new BookTitle(value!);
+  }
+}
+
+export class ISBN {
+  static readonly regExp = /(^[0-9]{10}$)|(^[0-9]{13}$)/;
+
+  private constructor(public readonly value: string) {}
+
+  static of(value?: string): BookTitle {
+    assert('bookIsbn').of(value).isNotEmpty().matches(ISBN.regExp);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return new ISBN(value!);
   }
 }
