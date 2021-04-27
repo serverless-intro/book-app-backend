@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="28" failures="0" errors="0" time="0.892">
+  <testsuite name="Web Adapter" errors="0" failures="0" skipped="0" timestamp="2021-04-27T16:33:48" time="0.652" tests="7">
+    <testcase classname="Web Adapter GET /api/books responds with all books" name="Web Adapter GET /api/books responds with all books" time="0.018">
+    </testcase>
+    <testcase classname="Web Adapter GET /api/books responds with Internal Server Error (500) if service rejects" name="Web Adapter GET /api/books responds with Internal Server Error (500) if service rejects" time="0.011">
+    </testcase>
+    <testcase classname="Web Adapter GET /api/books/:id responds with a book" name="Web Adapter GET /api/books/:id responds with a book" time="0.003">
+    </testcase>
+    <testcase classname="Web Adapter GET /api/books/:id responds with Not Found (404) if service rejects with ObjectNotFoundError" name="Web Adapter GET /api/books/:id responds with Not Found (404) if service rejects with ObjectNotFoundError" time="0.002">
+    </testcase>
+    <testcase classname="Web Adapter POST /api/books responds with Created (201)" name="Web Adapter POST /api/books responds with Created (201)" time="0.013">
+    </testcase>
+    <testcase classname="Web Adapter POST /api/books responds with Bad Request (400) if service rejects with ValidationError" name="Web Adapter POST /api/books responds with Bad Request (400) if service rejects with ValidationError" time="0.004">
+    </testcase>
+    <testcase classname="Web Adapter PUT /api/books/:id responds with OK (200)" name="Web Adapter PUT /api/books/:id responds with OK (200)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Application Services" errors="0" failures="0" skipped="0" timestamp="2021-04-27T16:33:49" time="0.069" tests="11">
+    <testcase classname="Application Services getAllBooks gets all books returned by a port" name="Application Services getAllBooks gets all books returned by a port" time="0.001">
+    </testcase>
+    <testcase classname="Application Services getAllBooks rejects if calling a port failed" name="Application Services getAllBooks rejects if calling a port failed" time="0.001">
+    </testcase>
+    <testcase classname="Application Services getBook gets a book returned by a port" name="Application Services getBook gets a book returned by a port" time="0">
+    </testcase>
+    <testcase classname="Application Services getBook rejects if ID passed is not correct" name="Application Services getBook rejects if ID passed is not correct" time="0.001">
+    </testcase>
+    <testcase classname="Application Services getBook rejects if calling a port failed" name="Application Services getBook rejects if calling a port failed" time="0">
+    </testcase>
+    <testcase classname="Application Services addNewBook calls a port with new book" name="Application Services addNewBook calls a port with new book" time="0.001">
+    </testcase>
+    <testcase classname="Application Services addNewBook rejects if calling a port failed" name="Application Services addNewBook rejects if calling a port failed" time="0">
+    </testcase>
+    <testcase classname="Application Services addNewBook rejects if book properties passed are not correct" name="Application Services addNewBook rejects if book properties passed are not correct" time="0">
+    </testcase>
+    <testcase classname="Application Services updateBook calls a port with book to be updated" name="Application Services updateBook calls a port with book to be updated" time="0.001">
+    </testcase>
+    <testcase classname="Application Services updateBook rejects if book properties passed are not correct" name="Application Services updateBook rejects if book properties passed are not correct" time="0">
+    </testcase>
+    <testcase classname="Application Services updateBook rejects if calling a port failed" name="Application Services updateBook rejects if calling a port failed" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Domain" errors="0" failures="0" skipped="0" timestamp="2021-04-27T16:33:49" time="0.053" tests="10">
+    <testcase classname="Domain Book is created when all its properties are correct" name="Domain Book is created when all its properties are correct" time="0.001">
+    </testcase>
+    <testcase classname="Domain Book fails to be created when title not provided" name="Domain Book fails to be created when title not provided" time="0">
+    </testcase>
+    <testcase classname="Domain Book fails to be created when title too long" name="Domain Book fails to be created when title too long" time="0">
+    </testcase>
+    <testcase classname="Domain Book fails to be created when author not provided" name="Domain Book fails to be created when author not provided" time="0">
+    </testcase>
+    <testcase classname="Domain Book fails to be created when author too long" name="Domain Book fails to be created when author too long" time="0.001">
+    </testcase>
+    <testcase classname="Domain Book fails to be created when ISBN wrong" name="Domain Book fails to be created when ISBN wrong" time="0">
+    </testcase>
+    <testcase classname="Domain Book is created from a state" name="Domain Book is created from a state" time="0">
+    </testcase>
+    <testcase classname="Domain Book fails to be created from state when ID not provided" name="Domain Book fails to be created from state when ID not provided" time="0">
+    </testcase>
+    <testcase classname="Domain Book fails to be created from state when ID too long" name="Domain Book fails to be created from state when ID too long" time="0.001">
+    </testcase>
+    <testcase classname="Domain Book fails to be created from state when ID corrupted" name="Domain Book fails to be created from state when ID corrupted" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
