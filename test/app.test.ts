@@ -1,3 +1,6 @@
+/**
+ * @group int
+ */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore: esModuleInterop flag set in tsconfig.json
 import request from 'supertest';
@@ -9,14 +12,13 @@ describe('App', () => {
   it('responds with 404 on /fake-url', (done) => {
     request(app).get('/fake-url').expect(404, done);
   });
-  xit('responds with a list of books on /api/books', (done) => {
+  it('responds with a list of books on /api/books', (done) => {
     request(app)
       .get('/api/books')
       .expect(200)
       .then((response) => {
         const books: BookState[] = response.body;
         expect(books).toBeDefined();
-        expect(books).toHaveLength(4);
         done();
       });
   });

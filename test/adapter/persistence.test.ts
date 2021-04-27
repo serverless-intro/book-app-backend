@@ -1,21 +1,32 @@
+/**
+ * @group int
+ */
 import { Book, BookId, BookState } from '../../src/domain/book';
-import { loadBook, persistNewBook, persistUpdatedBook } from '../../src/application/port/out';
-import { loadBookFactory, persistNewBookFactory, persistUpdatedBookFactory } from '../../src/adapter/out/persistence';
+import { loadBook, persistNewBook, persistUpdatedBook, loadAllBooks } from '../../src/application/port/out';
+import {
+  DynamoDbConfig,
+  loadAllBooksFactory,
+  loadBookFactory,
+  persistNewBookFactory,
+  persistUpdatedBookFactory,
+} from '../../src/adapter/out/persistence';
 import { ObjectNotFoundError } from '../../src/application/common';
+import { createDynamoDbConfig } from '../../src/app-frames';
 
 describe('Persistence Adapter', () => {
-  let author: string, title: string, testBook: BookState;
+  let author: string, title: string, testBook: BookState, dynamodbConfig: DynamoDbConfig;
 
   beforeEach(() => {
     author = 'Test author';
     title = 'Test title';
     testBook = Book.createNew({ author, title }).currentState();
+    dynamodbConfig = createDynamoDbConfig();
   });
 
   it('persists a new book and loads it', () => {
     // given
-    const persistNewBook: persistNewBook = persistNewBookFactory();
-    const loadBook: loadBook = loadBookFactory();
+    const persistNewBook: persistNewBook = persistNewBookFactory(dynamodbConfig);
+    const loadBook: loadBook = loadBookFactory(dynamodbConfig);
     const bookId = testBook.id;
     // when
     return persistNewBook(testBook).then(() =>
@@ -29,9 +40,9 @@ describe('Persistence Adapter', () => {
 
   it('persists a new book, updates and loads it', () => {
     // given
-    const persistNewBook: persistNewBook = persistNewBookFactory();
-    const persistUpdatedBook: persistUpdatedBook = persistUpdatedBookFactory();
-    const loadBook: loadBook = loadBookFactory();
+    const persistNewBook: persistNewBook = persistNewBookFactory(dynamodbConfig);
+    const persistUpdatedBook: persistUpdatedBook = persistUpdatedBookFactory(dynamodbConfig);
+    const loadBook: loadBook = loadBookFactory(dynamodbConfig);
     const bookId = testBook.id;
     const bookToUpdate = { ...testBook, title: 'Updated Title' };
     // when
@@ -46,25 +57,25 @@ describe('Persistence Adapter', () => {
       );
   });
 
-  // it('persists a new book and finds it among all books loaded', () => {
-  //   // given
-  //   const persistNewBook: persistNewBook = persistNewBookFactory();
-  //   const loadAllBooks: loadAllBooks = loadAllBooksFactory();
-  //   // const bookId = testBook.id;
-  //   // when
-  //   return (
-  //     persistNewBook(testBook)
-  //       .then(() => loadAllBooks())
-  //       // then
-  //       .then((allBooks) => {
-  //         expect(allBooks).toContainEqual(testBook);
-  //       })
-  //   );
-  // });
+  it('persists a new book and finds it among all books loaded', () => {
+    // given
+    const persistNewBook: persistNewBook = persistNewBookFactory(dynamodbConfig);
+    const loadAllBooks: loadAllBooks = loadAllBooksFactory(dynamodbConfig);
+    // const bookId = testBook.id;
+    // when
+    return (
+      persistNewBook(testBook)
+        .then(() => loadAllBooks())
+        // then
+        .then((allBooks) => {
+          expect(allBooks).toContainEqual(testBook);
+        })
+    );
+  });
 
   it('rejects to load a book if one has not been persisted', () => {
     // given
-    const loadBook: loadBook = loadBookFactory();
+    const loadBook: loadBook = loadBookFactory(dynamodbConfig);
     const idOfNotPersistedBook = BookId.generateNew();
     // when
     return (
