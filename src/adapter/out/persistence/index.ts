@@ -1,6 +1,8 @@
 import { loadAllBooks, loadBook, persistNewBook, persistUpdatedBook } from '../../../application/port/out';
 import { BookId, BookState } from '../../../domain/book';
 import { ObjectNotFoundError } from '../../../application/common';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import AWS from 'aws-sdk';
 
 let books: BookState[] = [
   { id: '5VVGTSPMKHH3A8', author: 'Douglas Crockford', title: 'JavaScript: The Good Parts', isbn: '9780596517748' },
@@ -9,6 +11,12 @@ let books: BookState[] = [
   { id: '5VVGTSPMKHH3A1', author: 'Eric Evans', title: 'Domain-Driven Design', isbn: '9780321125217' },
 ];
 
+export interface DynamoDbConfig {
+  endpoint?: string;
+  region: string;
+  table: string;
+}
+
 export function loadBookFactory(): loadBook {
   return function (id: BookId): Promise<BookState> {
     const book = books.find((book) => book.id === id.value);
@@ -16,9 +24,22 @@ export function loadBookFactory(): loadBook {
   };
 }
 
-export function loadAllBooksFactory(): loadAllBooks {
+export function loadAllBooksFactory({ endpoint, region, table }: DynamoDbConfig): loadAllBooks {
+  const dynamodb: DocumentClient = new AWS.DynamoDB.DocumentClient({
+    region,
+    endpoint,
+  });
+
   return function (): Promise<BookState[]> {
-    return Promise.resolve([...books]);
+    return dynamodb
+      .scan({
+        TableName: table,
+      })
+      .promise()
+      .then((books) => {
+        console.log(books.Items);
+        return books.Items as BookState[];
+      });
   };
 }
 

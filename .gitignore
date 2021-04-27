@@ -3,6 +3,7 @@
 *.sublime-workspace
 *.log
 .serverless
+.dynamodb
 v8-compile-cache-*
 jest/*
 coverage

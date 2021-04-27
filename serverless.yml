@@ -1,5 +1,26 @@
 service: book-app-backend
 
+plugins:
+  - serverless-dynamodb-local
+
+custom:
+  bookTableName: 'book-table-${self:provider.stage}'
+  dynamodb:
+    start:
+      seed: true
+      inMemory: true
+    stages:
+      - ${self:provider.stage}
+    seed:
+      books:
+        sources:
+          - table: ${self:custom.bookTableName}
+            sources: [ ./test-data/books.json ]
+
+environment:
+  AWS_BOOK_TABLE: ${self:custom.bookTableName}
+  AWS_REGION: ${self:provider.region}
+
 package:
   patterns:
     - '!./**'
@@ -10,8 +31,21 @@ provider:
   name: aws
   runtime: nodejs14.x
   lambdaHashingVersion: 20201221
-  stage: dev
+  stage: int-db
   region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
+        - Fn::Join:
+            - '/'
+            - - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
+              - 'index/*'
 
 functions:
   app: # the default 'catch all' route only
@@ -20,3 +54,19 @@ functions:
       - httpApi:
           method: '*'
           path: '*'
+
+resources:
+  Resources:
+    bookTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.bookTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
