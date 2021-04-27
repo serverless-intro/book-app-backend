@@ -58,7 +58,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./coverage
+            - .
 
   upload_coverage_to_coveralls:
     docker:
