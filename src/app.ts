@@ -17,6 +17,7 @@ export = createAppWithFramesAround((app) => {
 
   function createBookRoutes(): Router {
     const dynamoDbConfig = createDynamoDbConfig();
+    console.log('DynamoDbConfig used: ', dynamoDbConfig);
     const bookRoutes = express.Router();
     addGetBookRoute(bookRoutes, getBookFactory(loadBookFactory()));
     addGetAllBooksRoute(bookRoutes, getAllBooksFactory(loadAllBooksFactory(dynamoDbConfig)));

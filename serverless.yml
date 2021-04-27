@@ -17,10 +17,6 @@ custom:
           - table: ${self:custom.bookTableName}
             sources: [ ./test-data/books.json ]
 
-environment:
-  AWS_BOOK_TABLE: ${self:custom.bookTableName}
-  AWS_REGION: ${self:provider.region}
-
 package:
   patterns:
     - '!./**'
@@ -33,19 +29,25 @@ provider:
   lambdaHashingVersion: 20201221
   stage: int-db
   region: eu-central-1
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-      Resource:
-        - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
-        - Fn::Join:
-            - '/'
-            - - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
-              - 'index/*'
+
+  environment:
+    AWS_BOOK_TABLE: ${self:custom.bookTableName}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource:
+            - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
+            - Fn::Join:
+              - '/'
+              - - { "Fn::GetAtt": [ "bookTable", "Arn" ] }
+                - 'index/*'
 
 functions:
   app: # the default 'catch all' route only
