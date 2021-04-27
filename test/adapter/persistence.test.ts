@@ -1,11 +1,6 @@
 import { Book, BookId, BookState } from '../../src/domain/book';
-import { loadAllBooks, loadBook, persistNewBook, persistUpdatedBook } from '../../src/application/port/out';
-import {
-  loadAllBooksFactory,
-  loadBookFactory,
-  persistNewBookFactory,
-  persistUpdatedBookFactory,
-} from '../../src/adapter/out/persistence';
+import { loadBook, persistNewBook, persistUpdatedBook } from '../../src/application/port/out';
+import { loadBookFactory, persistNewBookFactory, persistUpdatedBookFactory } from '../../src/adapter/out/persistence';
 import { ObjectNotFoundError } from '../../src/application/common';
 
 describe('Persistence Adapter', () => {
@@ -51,21 +46,21 @@ describe('Persistence Adapter', () => {
       );
   });
 
-  it('persists a new book and finds it among all books loaded', () => {
-    // given
-    const persistNewBook: persistNewBook = persistNewBookFactory();
-    const loadAllBooks: loadAllBooks = loadAllBooksFactory();
-    // const bookId = testBook.id;
-    // when
-    return (
-      persistNewBook(testBook)
-        .then(() => loadAllBooks())
-        // then
-        .then((allBooks) => {
-          expect(allBooks).toContainEqual(testBook);
-        })
-    );
-  });
+  // it('persists a new book and finds it among all books loaded', () => {
+  //   // given
+  //   const persistNewBook: persistNewBook = persistNewBookFactory();
+  //   const loadAllBooks: loadAllBooks = loadAllBooksFactory();
+  //   // const bookId = testBook.id;
+  //   // when
+  //   return (
+  //     persistNewBook(testBook)
+  //       .then(() => loadAllBooks())
+  //       // then
+  //       .then((allBooks) => {
+  //         expect(allBooks).toContainEqual(testBook);
+  //       })
+  //   );
+  // });
 
   it('rejects to load a book if one has not been persisted', () => {
     // given
