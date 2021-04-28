@@ -27,8 +27,16 @@ provider:
   name: aws
   runtime: nodejs14.x
   lambdaHashingVersion: 20201221
-  stage: int-db
+  stage: int-iam
   region: eu-central-1
+
+  httpApi:
+    authorizers:
+      cognitoAuthorizer:
+        identitySource: $request.header.Authorization
+        issuerUrl: https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_5QiuwGB1A
+        audience:
+          - 3e4f373o3vbglt3dmuobd20ov7
 
   environment:
     AWS_BOOK_TABLE: ${self:custom.bookTableName}
@@ -56,6 +64,7 @@ functions:
       - httpApi:
           method: '*'
           path: '*'
+          authorizer: cognitoAuthorizer
 
 resources:
   Resources:
