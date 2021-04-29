@@ -58,6 +58,10 @@ provider:
                 - 'index/*'
 
 functions:
+  appPreflight: # allow unauthorized OPTIONS (preflight) requests
+    handler: dist/serverless-app.handler # after 'npm run build' index.ts is transpiled to dist/index.js
+    events:
+      - httpApi: OPTIONS /{proxy+}
   app: # the default 'catch all' route only
     handler: dist/serverless-app.handler # after 'npm run build' index.ts is transpiled to dist/index.js
     events:
